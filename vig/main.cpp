@@ -141,7 +141,7 @@ string get_file()
 
 void up_input(string& input)
 {
-    unsigned i;
+    uint32_t i;
     for (i = 0; i < input.size(); i++)
         input[i] = toupper(input[i]);
 }
