@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1583759643 source:d:\programe c++\vig\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<conio.h>
+	<windows.h>
+	<ctime>
+
