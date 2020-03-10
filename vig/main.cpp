@@ -149,10 +149,16 @@ void up_input(string& input)
 string KeyGen(short key_len)
 {
     string key;
-    if (!key_len)
-        key_len = rand() % 10;
-    for (short i = 0; i < key_len; i++)
-        key += alfa[rand() % alfa.size()];
+    while (true)
+    {
+        if (!key_len)
+            key_len = rand() % 10;
+        for (short i = 0; i < key_len; i++)
+            key += alfa[rand() % alfa.size()];
+
+        if (!key.empty())
+            break;
+    }
     return key;
 }
 
