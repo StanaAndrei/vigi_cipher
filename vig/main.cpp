@@ -8,23 +8,34 @@ using namespace std;
 
 const char newline = '\n';
 void Setup();
-void e_inter(), d_inter(), up_input(string &input);
+void e_inter(), d_inter(), up_input(string&);
 void __attribute__((constructor)) Setup();
-string Encrypt(string mess, string key);
-string Decrypt(string e_mess, string key);
-string KeyGen(short key_len);
+string Encrypt(string, string);
+string Decrypt(string, string);
+string KeyGen(short);
 string get_file();
 char option;
 int Exit_app();
 string alfa;
+inline void AltEnter(bool&);
+void menu();
 
 ///********
 int main()
 {
+    menu();
+    exit(EXIT_FAILURE);
+}
+
+bool isFullScr = false;
+string conStat = "fullscreen";
+void menu()
+{
 
     cout << "1.encrypt" << newline;
     cout << "2.decrypt" << newline;
-    cout << "3.exit" << newline;
+    cout << "3." + conStat << newline;
+    cout << "4.exit" << newline;
     cout << "alege(1/2/3):";
     option = getch();
     system("cls");
@@ -37,11 +48,34 @@ int main()
         d_inter();
         break;
     case '3':
+        if (!isFullScr)
+        {
+            conStat = "non" + conStat;
+            AltEnter(isFullScr);
+        }
+        else
+        {
+            conStat.erase(0, 3);
+            AltEnter(isFullScr);
+        }
+        menu();
+        cout << newline;
+        break;
+    case '4':
         Exit_app();
         break;
     default:
-        return main();
+        return menu();
     }
+}
+
+void AltEnter(bool& isFullScr)
+{
+    isFullScr = (!isFullScr) ? true : false;
+    keybd_event(VK_MENU,0x38,0,0);
+    keybd_event(VK_RETURN,0x1c,0,0);
+    keybd_event(VK_RETURN,0x1c,KEYEVENTF_KEYUP,0);
+    keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
 }
 
 void Setup()
@@ -65,7 +99,7 @@ int Exit_app()
         Sleep(1000);
         cout << '.';
     }
-    return EXIT_SUCCESS;
+    exit(EXIT_SUCCESS);
 }
 ///
 string Encrypt(string mess, string key)
@@ -235,7 +269,7 @@ back_interface:
         switch (opt)
         {
         case '1':
-            main();
+            menu();
             break;
         case '2':
             e_inter();
@@ -287,7 +321,7 @@ back_interface:
         switch (opt)
         {
         case '1':
-            main();
+            menu();
             break;
         case '2':
             e_inter();
