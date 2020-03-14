@@ -14,17 +14,18 @@ string Encrypt(string, string);
 string Decrypt(string, string);
 string KeyGen(short);
 string get_file();
-char option;
-int Exit_app();
-string alfa;
+inline void Exit_app();
+inline string init_alfa();
 inline void AltEnter(bool&);
 void menu();
+char option;
+const string alfa = init_alfa();
 
 ///********
 int main()
 {
     menu();
-    exit(EXIT_FAILURE);
+    return EXIT_FAILURE;
 }
 
 bool isFullScr = false;
@@ -36,7 +37,7 @@ void menu()
     cout << "2.decrypt" << newline;
     cout << "3." + conStat << newline;
     cout << "4.exit" << newline;
-    cout << "alege(1/2/3):";
+    cout << "alege(1/2/3/4):";
     option = getch();
     system("cls");
     switch (option)
@@ -78,6 +79,14 @@ void AltEnter(bool& isFullScr)
     keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
 }
 
+inline string init_alfa()
+{
+    string alfa = "";
+    for (char c = 'A'; c <= 'Z'; c++)
+        alfa += c;
+    return alfa;
+}
+
 void Setup()
 {
     ios :: sync_with_stdio(true);
@@ -87,11 +96,9 @@ void Setup()
     system("title V-ENCRYPTER");
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, 10);//*/
-    for (char c = 'A'; c <= 'Z'; c++)
-        alfa += c;
 }
 
-int Exit_app()
+inline void Exit_app()
 {
     cout << "Exit";
     for (int i = 0; i < 4; i++)
@@ -106,7 +113,7 @@ string Encrypt(string mess, string key)
 {
     int i, j, poz, shift;
     string e_mess;
-    const int len = mess.size(), key_len = key.size();
+    const int len = mess.length(), key_len = key.length();
     for (i = 0, j = 0; i < len; i++, j++)
     {
         if (mess[i] == 32)
@@ -116,9 +123,9 @@ string Encrypt(string mess, string key)
             continue;
         }
 
-        poz = (int)mess[i] - 65;
-        shift = (int)key[j % key_len] - 65;
-        e_mess += alfa[(shift + poz) % 26];
+        poz = (int)mess[i] - alfa.front();
+        shift = (int)key[j % key_len] - alfa.front();
+        e_mess += alfa[(shift + poz) % alfa.length()];
     }
     return e_mess;
 }
@@ -126,7 +133,7 @@ string Encrypt(string mess, string key)
 string Decrypt(string e_mess, string key)
 {
     string text;
-    const int len = e_mess.size(), key_len = key.size();
+    const int len = e_mess.length(), key_len = key.length();
     int i, j, poz, shift;
     for (i = 0, j = 0; i < len; i++, j++)
     {
@@ -136,9 +143,9 @@ string Decrypt(string e_mess, string key)
             text += 32;
             continue;
         }
-        poz = (int)e_mess[i] - 65;
-        shift = (int)key[j % key_len] - 65;
-        text += alfa[(poz - shift + 26) % 26];
+        poz = (int)e_mess[i] - alfa.front();
+        shift = (int)key[j % key_len] - alfa.front();
+        text += alfa[(poz - shift + alfa.length()) % alfa.length()];
     }
     return text;
 }
@@ -176,7 +183,7 @@ string get_file()
 void up_input(string& input)
 {
     uint32_t i;
-    for (i = 0; i < input.size(); i++)
+    for (i = 0; i < input.length(); i++)
         input[i] = toupper(input[i]);
 }
 
@@ -188,7 +195,7 @@ string KeyGen(short key_len)
         if (!key_len)
             key_len = rand() % 10;
         for (short i = 0; i < key_len; i++)
-            key += alfa[rand() % alfa.size()];
+            key += alfa[rand() % alfa.length()];
 
         if (!key.empty())
             break;
@@ -209,7 +216,7 @@ void e_inter()
     {
         option = getch();
     }
-    while (key_type < '1' && key_type > '2');
+    while (option < '1' && option > '2');
     system("cls");
     cout << "(cheia e cuvant)" << newline;
     cout << "1.Introdu cheia!" << newline;
