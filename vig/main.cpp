@@ -26,7 +26,7 @@ const string alfa = init_alfa();
 int main()
 {
     menu();
-    return EXIT_FAILURE;
+    return 0;
 }
 
 bool isFullScr = false;
